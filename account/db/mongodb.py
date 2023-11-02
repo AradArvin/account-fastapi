@@ -29,3 +29,8 @@ class MongoDBConnectionManager:
         return result
     
 
+    async def save_data_to_db_collection(self, instance: BaseModel):
+        result = await self.collection.insert_one(instance)
+        return result
+
+
