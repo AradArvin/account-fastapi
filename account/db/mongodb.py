@@ -46,3 +46,7 @@ class MongoDBConnectionManager:
         return data_list
 
 
+    async def delete_data_from_db_collection(self, instance_id: ObjectId):
+        result = await self.collection.find_one_and_delete({"_id":instance_id})
+        return result
+
