@@ -50,3 +50,7 @@ class MongoDBConnectionManager:
         result = await self.collection.find_one_and_delete({"_id":instance_id})
         return result
 
+
+    async def update_db_collection_data(self, instance_id: ObjectId, updated_instance: BaseModel):
+        result = await self.collection.update_one({"_id": instance_id}, {"$set": updated_instance})
+        return result
