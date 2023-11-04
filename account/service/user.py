@@ -22,3 +22,15 @@ class UserService:
         return self.PWD_CONTEXT.hash(password)
     
 
+    async def get_user(self, email: str, password: str) -> dict:
+        user = await self.collection.find_data_by_another_field(field_name="email", field_data=email)
+
+        try:
+            user != None
+            await self.verify_password(password, user["password"])
+            return user
+        except:
+            raise UserNotFoundError
+
+        
+
