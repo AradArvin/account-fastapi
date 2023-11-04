@@ -32,3 +32,22 @@ async def user_signup(user: User = Body(),
 
 
 
+
+@account_router.post(path="/api/v1/login", summary="User Login", response_model=Tokens, status_code=status.HTTP_200_OK)
+async def user_login(login_data: UserLogin = Body(), 
+                     user_service: UserService = Depends(),):
+    
+    login_data = jsonable_encoder(login_data)
+
+    try: 
+        user = await user_service.authenticate(email=login_data["email"], password=login_data["password"])
+    except UserNotFoundError:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Error. Please check your entered email/password.")
+
+    response_data = await httpx_response("api/v1/login", user)
+
+    return response_data
+
+
+
+
