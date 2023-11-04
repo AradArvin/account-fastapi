@@ -13,3 +13,12 @@ class User(BaseModel):
         populate_by_name = True
 
 
+class UserResponse(BaseModel):
+    id: str
+    username: str | None=None
+    fullname: str | None=None
+    email: EmailStr = Field()
+    password: str = Field()
+
+
+
