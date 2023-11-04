@@ -22,3 +22,11 @@ class UserResponse(BaseModel):
 
 
 
+class UserLogin(BaseModel):
+    _id: str
+    email: EmailStr = Field()
+    password: str = Field()
+
+
+
+
