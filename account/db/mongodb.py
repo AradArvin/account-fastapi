@@ -18,14 +18,16 @@ class MongoDBConnectionManager:
     async def find_data_by_id(self, instance_id: ObjectId):
         result = await self.collection.find_one({"_id":instance_id})
         if result:
-            result["_id"] = str(result["_id"])
+            result["id"] = str(result["_id"])
+            del[result['_id']]
         return result
 
 
     async def find_data_by_another_field(self, field_name: str, field_data: str):
         result = await self.collection.find_one({f"{field_name}":field_data})
         if result:
-            result["_id"] = str(result["_id"])
+            result["id"] = str(result["_id"])
+            del[result['_id']]
         return result
     
 
@@ -40,7 +42,8 @@ class MongoDBConnectionManager:
         collection_datas = await self.collection.find()
 
         for data in collection_datas:
-            data["_id"] = str(data["_id"])
+            data["id"] = str(data["_id"])
+            del[data['_id']]
             data_list.append(data)
 
         return data_list
