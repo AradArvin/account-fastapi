@@ -34,3 +34,9 @@ class UserService:
 
         
 
+    async def authenticate(self, email: str, password: str) -> dict:
+        user = await self.get_user(email, password)
+        return user
+    
+
+
