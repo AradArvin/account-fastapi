@@ -10,3 +10,7 @@ class UserNotFoundError(Error):
         super().__init__(message)
 
 
+class NoDataEnteredError(Error):
+    
+    def __init__(self, message: str = "No data entered!") -> None:
+        super().__init__(message)
