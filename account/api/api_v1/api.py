@@ -51,3 +51,12 @@ async def user_login(login_data: UserLogin = Body(),
 
 
 
+@data_router.post(path="/api/v1/mongodb", summary="User data", response_model=UserResponse, status_code=status.HTTP_200_OK)
+async def user_data(data: dict):
+
+    user = await user_collection.find_data_by_id(ObjectId(data["id"]))
+
+    return user
+
+
+
