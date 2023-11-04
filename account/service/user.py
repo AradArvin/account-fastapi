@@ -14,3 +14,7 @@ class UserService:
         self.collection = get_collection()
 
     
+    async def verify_password(self, plain_password: str, hashed_password: str) -> bool:
+        return self.PWD_CONTEXT.verify(plain_password, hashed_password)
+
+
