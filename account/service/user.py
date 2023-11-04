@@ -8,3 +8,5 @@ from exception.exception import *
 
 class UserService:
     
+    PWD_CONTEXT = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
