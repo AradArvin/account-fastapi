@@ -10,3 +10,7 @@ class UserService:
     
     PWD_CONTEXT = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+    def __init__(self) -> None:
+        self.collection = get_collection()
+
+    
