@@ -18,3 +18,7 @@ class UserService:
         return self.PWD_CONTEXT.verify(plain_password, hashed_password)
 
 
+    async def get_password_hash(self, password: str) -> str:
+        return self.PWD_CONTEXT.hash(password)
+    
+
