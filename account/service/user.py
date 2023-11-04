@@ -40,3 +40,9 @@ class UserService:
     
 
 
+    async def add_user(self, user) -> dict:
+        user["password"] = await self.get_password_hash(user["password"])
+        created_user = await self.collection.save_data_to_db_collection(user)
+        return created_user
+
+
