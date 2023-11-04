@@ -46,3 +46,19 @@ class UserService:
         return created_user
 
 
+    async def update_user_data(self, user_data, entered_data):
+
+        new_user_data = {k: v for k, v in dict(entered_data).items() if v if not None}
+
+        if len(new_user_data) >= 1:
+            result = await self.collection.update_db_collection_data(instance_id=ObjectId(user_data["id"]), updated_instance=new_user_data)
+        else:
+            result = None 
+        
+        try:
+            result != None
+        except:
+            raise NoDataEnteredError
+
+        updated_user_data = await self.collection.find_data_by_id(instance_id=ObjectId(user_data["id"]))
+        return updated_user_data
