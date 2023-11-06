@@ -54,7 +54,7 @@ async def user_signup(user: User = Body(),
 
 
 
-@account_router.post(path="/api/v1/login", summary="User Login", response_model=Tokens, status_code=status.HTTP_200_OK)
+@account_router.post(path="/api/v1/login", summary="User Login", response_model=Tokens)
 async def user_login(login_data: UserLogin = Body(), 
                      user_service: UserService = Depends(),):
     
@@ -62,12 +62,17 @@ async def user_login(login_data: UserLogin = Body(),
 
     try: 
         user = await user_service.authenticate(email=login_data["email"], password=login_data["password"])
+        user != None
     except UserNotFoundError:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Error. Please check your entered email/password.")
+    
+    email_response = await httpx_response_otp("api/v1/email", user)
+    print("email_response", email_response)
+    if email_response["status"] != "200_OK":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Verify email send failure please try again!")
 
-    response_data = await httpx_response("api/v1/login", user)
 
-    return response_data
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "Please verify within 2min to login..."})
 
 
 
