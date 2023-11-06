@@ -14,6 +14,27 @@ user_collection = get_collection()
 
 
 
+@account_router.post(path="/api/v1/verify", summary="User Verification", response_model=Tokens, status_code=status.HTTP_200_OK)
+async def user_verify(data: OTP = Body(), 
+                      otp_service: OTPService = Depends(),):
+    
+    data = jsonable_encoder(data)
+    
+    user_id_from_otp = await otp_service.get_user_id_if_verify(data["otp"])
+
+    
+    if user_id_from_otp == None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="OTP expired please login again to get a new one.")
+
+    user = await user_collection.find_data_by_id(ObjectId(user_id_from_otp))
+
+    response_data = await httpx_response("api/v1/login", user)
+
+    return response_data
+
+
+
+
 @account_router.post(path="/api/v1/signup", summary="User Signup", response_model=Tokens, status_code=status.HTTP_201_CREATED)
 async def user_signup(user: User = Body(), 
                       user_service: UserService = Depends(),):
