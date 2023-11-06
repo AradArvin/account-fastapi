@@ -33,3 +33,8 @@ class UserLogin(BaseModel):
 class Tokens(BaseModel):
     access: str = Field()
     refresh: str = Field()
+
+
+
+class OTP(BaseModel):
+    otp: str = Field()
