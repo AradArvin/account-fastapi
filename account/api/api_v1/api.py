@@ -98,6 +98,19 @@ async def user_profile(request: Request):
 
 
 
+@account_router.post(path="/api/v1/update-profile", dependencies=[Depends(JWTBearer())], summary="Update User profile", response_model=UpdateProfile)
+async def update_user_profile(request: Request,
+                              entered_data: UpdateProfile = Body(),):
+    
+    entered_data = jsonable_encoder(entered_data)
+
+    bearer = request.headers.get("Authorization")
+    updated_user = await httpx_response_with_header_and_data("api/v1/update-profile", entered_data, bearer)
+
+    return updated_user
+
+
+
 
 @data_router.post(path="/api/v1/mongodb", summary="User data", response_model=UserResponse, status_code=status.HTTP_200_OK)
 async def user_data(data: dict):
