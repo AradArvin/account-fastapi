@@ -211,6 +211,19 @@ async def like_list(request: Request,
 
 
 
+@interactions_router.post(path="/api/v1/comment-list", dependencies=[Depends(JWTBearer())], summary="Commented episodes")
+async def comment_list(request: Request, 
+                       interaction_service: InteractionsService("comment") = Depends(),):
+
+    try:
+        response = await interaction_service.get_interaction_data_list(request)
+        return response
+    except UserNotLoggedInError:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Please login first!")
+    
+
+
+
 @data_router.post(path="/api/v1/mongodb", summary="User data", response_model=UserResponse, status_code=status.HTTP_200_OK)
 async def user_data(data: dict):
 
