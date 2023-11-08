@@ -182,6 +182,22 @@ async def bookmark(request: Request,
 
 
 
+@interactions_router.post(path="/api/v1/subscribe", dependencies=[Depends(JWTBearer())], summary="Subscribe rss", response_model=Subscribe)
+async def subscribe(request: Request, 
+                    subscribe_data: Subscribe = Body(), 
+                    interaction_service: InteractionsService("subscribe") = Depends(),):
+
+    subscribe_data = jsonable_encoder(subscribe_data)
+
+    try:
+        response = await interaction_service.save_interaction_data(request, subscribe_data)
+        return response
+    except UserNotLoggedInError:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Please login first!")
+
+
+
+
 @data_router.post(path="/api/v1/mongodb", summary="User data", response_model=UserResponse, status_code=status.HTTP_200_OK)
 async def user_data(data: dict):
 
