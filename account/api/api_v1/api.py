@@ -111,6 +111,16 @@ async def update_user_profile(request: Request,
 
 
 
+@account_router.post(path="/api/v1/access-token", dependencies=[Depends(JWTBearer(is_refresh=True))], summary="Get access token if logged in", response_model=AccessToken)
+async def get_access_token(request: Request):
+    
+    bearer = request.headers.get("Authorization")
+    access_token = await httpx_response_with_header("api/v1/access-token", bearer)
+
+    return access_token
+
+
+
 
 @data_router.post(path="/api/v1/mongodb", summary="User data", response_model=UserResponse, status_code=status.HTTP_200_OK)
 async def user_data(data: dict):
