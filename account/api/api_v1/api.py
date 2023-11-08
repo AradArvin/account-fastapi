@@ -134,15 +134,15 @@ async def logout(request: Request):
 
 # Routes for user interactions 
 
-@interactions_router.post(path="/api/v1/like", dependencies=[Depends(JWTBearer())], summary="Like epidodes", response_model=Like)
+@interactions_router.post(path="/api/v1/like", dependencies=[Depends(JWTBearer())], summary="Like epidodes", response_model=LikeResponse)
 async def like(request: Request, 
                like_data: Like = Body(), 
-               interaction_service: InteractionsService("like") = Depends(),):
+               interaction_service: InteractionsService = Depends(),):
 
     like_data = jsonable_encoder(like_data)
 
     try:
-        response = await interaction_service.save_interaction_data(request, like_data)
+        response = await interaction_service.save_interaction_data(request, like_data, "like")
         return response
     except UserNotLoggedInError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Please login first!")
@@ -150,15 +150,15 @@ async def like(request: Request,
 
 
 
-@interactions_router.post(path="/api/v1/comment", dependencies=[Depends(JWTBearer())], summary="Comment on episodes", response_model=Comment)
+@interactions_router.post(path="/api/v1/comment", dependencies=[Depends(JWTBearer())], summary="Comment on episodes", response_model=CommentResponse)
 async def comment(request: Request, 
                   comment_data: Comment = Body(), 
-                  interaction_service: InteractionsService("comment") = Depends(),):
+                  interaction_service: InteractionsService = Depends(),):
 
     comment_data = jsonable_encoder(comment_data)
 
     try:
-        response = await interaction_service.save_interaction_data(request, comment_data)
+        response = await interaction_service.save_interaction_data(request, comment_data, "comment")
         return response
     except UserNotLoggedInError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Please login first!")
@@ -166,15 +166,15 @@ async def comment(request: Request,
 
 
 
-@interactions_router.post(path="/api/v1/bookmark", dependencies=[Depends(JWTBearer())], summary="Bookmark epidodes", response_model=Bookmark)
+@interactions_router.post(path="/api/v1/bookmark", dependencies=[Depends(JWTBearer())], summary="Bookmark epidodes", response_model=BookmarkResponse)
 async def bookmark(request: Request, 
                    bookmark_data: Bookmark = Body(), 
-                   interaction_service: InteractionsService("bookmark") = Depends(),):
+                   interaction_service: InteractionsService = Depends(),):
 
     bookmark_data = jsonable_encoder(bookmark_data)
 
     try:
-        response = await interaction_service.save_interaction_data(request, bookmark_data)
+        response = await interaction_service.save_interaction_data(request, bookmark_data, "bookmark")
         return response
     except UserNotLoggedInError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Please login first!")
@@ -182,15 +182,15 @@ async def bookmark(request: Request,
 
 
 
-@interactions_router.post(path="/api/v1/subscribe", dependencies=[Depends(JWTBearer())], summary="Subscribe rss", response_model=Subscribe)
+@interactions_router.post(path="/api/v1/subscribe", dependencies=[Depends(JWTBearer())], summary="Subscribe rss", response_model=SubscribeResponse)
 async def subscribe(request: Request, 
                     subscribe_data: Subscribe = Body(), 
-                    interaction_service: InteractionsService("subscribe") = Depends(),):
+                    interaction_service: InteractionsService = Depends(),):
 
     subscribe_data = jsonable_encoder(subscribe_data)
 
     try:
-        response = await interaction_service.save_interaction_data(request, subscribe_data)
+        response = await interaction_service.save_interaction_data(request, subscribe_data, "subscribe")
         return response
     except UserNotLoggedInError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Please login first!")
@@ -200,10 +200,10 @@ async def subscribe(request: Request,
 
 @interactions_router.post(path="/api/v1/like-list", dependencies=[Depends(JWTBearer())], summary="Liked epidodes")
 async def like_list(request: Request, 
-                    interaction_service: InteractionsService("like") = Depends(),):
+                    interaction_service: InteractionsService = Depends(),):
 
     try:
-        response = await interaction_service.get_interaction_data_list(request)
+        response = await interaction_service.get_interaction_data_list(request, "like")
         return response
     except UserNotLoggedInError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Please login first!")
@@ -213,10 +213,10 @@ async def like_list(request: Request,
 
 @interactions_router.post(path="/api/v1/comment-list", dependencies=[Depends(JWTBearer())], summary="Commented episodes")
 async def comment_list(request: Request, 
-                       interaction_service: InteractionsService("comment") = Depends(),):
+                       interaction_service: InteractionsService = Depends(),):
 
     try:
-        response = await interaction_service.get_interaction_data_list(request)
+        response = await interaction_service.get_interaction_data_list(request, "comment")
         return response
     except UserNotLoggedInError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Please login first!")
@@ -226,10 +226,10 @@ async def comment_list(request: Request,
 
 @interactions_router.post(path="/api/v1/bookmark-list", dependencies=[Depends(JWTBearer())], summary="Bookmark epidodes")
 async def bookmark_list(request: Request, 
-                        interaction_service: InteractionsService("bookmark") = Depends(),):
+                        interaction_service: InteractionsService = Depends(),):
 
     try:
-        response = await interaction_service.get_interaction_data_list(request)
+        response = await interaction_service.get_interaction_data_list(request, "bookmark")
         return response
     except UserNotLoggedInError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Please login first!")
@@ -239,10 +239,10 @@ async def bookmark_list(request: Request,
 
 @interactions_router.post(path="/api/v1/subscribe-list", dependencies=[Depends(JWTBearer())], summary="Subscribe rss")
 async def subscribe_list(request: Request, 
-                         interaction_service: InteractionsService("subscribe") = Depends(),):
+                         interaction_service: InteractionsService = Depends(),):
 
     try:
-        response = await interaction_service.get_interaction_data_list(request)
+        response = await interaction_service.get_interaction_data_list(request, "subscribe")
         return response
     except UserNotLoggedInError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Please login first!")
