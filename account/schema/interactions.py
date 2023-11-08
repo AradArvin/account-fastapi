@@ -14,3 +14,10 @@ class Comment(BaseModel):
     content: str = Field()
 
 
+class Bookmark(BaseModel):
+    _id: str
+    episode_id: str = Field()
+    user_id: str = Field()
+    bookmark_list_name: str | None=None
+
+
