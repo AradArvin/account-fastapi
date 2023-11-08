@@ -166,6 +166,22 @@ async def comment(request: Request,
 
 
 
+@interactions_router.post(path="/api/v1/bookmark", dependencies=[Depends(JWTBearer())], summary="Bookmark epidodes", response_model=Bookmark)
+async def bookmark(request: Request, 
+                   bookmark_data: Bookmark = Body(), 
+                   interaction_service: InteractionsService("bookmark") = Depends(),):
+
+    bookmark_data = jsonable_encoder(bookmark_data)
+
+    try:
+        response = await interaction_service.save_interaction_data(request, bookmark_data)
+        return response
+    except UserNotLoggedInError:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Please login first!")
+
+
+
+
 @data_router.post(path="/api/v1/mongodb", summary="User data", response_model=UserResponse, status_code=status.HTTP_200_OK)
 async def user_data(data: dict):
 
