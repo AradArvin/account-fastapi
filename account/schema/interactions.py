@@ -21,3 +21,7 @@ class Bookmark(BaseModel):
     bookmark_list_name: str | None=None
 
 
+class Subscribe(BaseModel):
+    _id: str
+    rss_id: str = Field()
+    user_id: str = Field()
