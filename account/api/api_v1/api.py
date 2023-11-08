@@ -121,6 +121,16 @@ async def get_access_token(request: Request):
 
 
 
+@account_router.post(path="/api/v1/logout", dependencies=[Depends(JWTBearer())], summary="Logout from account")
+async def logout(request: Request):
+    
+    bearer = request.headers.get("Authorization")
+    access_token = await httpx_response_with_header("api/v1/logout", bearer)
+
+    return access_token
+
+
+
 
 @data_router.post(path="/api/v1/mongodb", summary="User data", response_model=UserResponse, status_code=status.HTTP_200_OK)
 async def user_data(data: dict):
