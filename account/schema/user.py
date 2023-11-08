@@ -21,6 +21,12 @@ class UserResponse(BaseModel):
     password: str = Field()
 
 
+class UserProfile(BaseModel):
+    username: str | None=None
+    fullname: str | None=None
+    email: EmailStr = Field()
+
+
 
 class UserLogin(BaseModel):
     _id: str
