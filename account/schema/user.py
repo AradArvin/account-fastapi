@@ -48,5 +48,10 @@ class Tokens(BaseModel):
 
 
 
+class AccessToken(BaseModel):
+    access: str = Field()
+
+
+
 class OTP(BaseModel):
     otp: str = Field()
