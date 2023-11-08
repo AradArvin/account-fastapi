@@ -88,6 +88,17 @@ async def user_login(login_data: UserLogin = Body(),
 
 
 
+@account_router.post(path="/api/v1/profile", dependencies=[Depends(JWTBearer())], summary="User profile", response_model=UserProfile)
+async def user_profile(request: Request):
+    
+    bearer = request.headers.get("Authorization")
+    user = await httpx_response_with_header("api/v1/profile", bearer)
+
+    return user
+
+
+
+
 @data_router.post(path="/api/v1/mongodb", summary="User data", response_model=UserResponse, status_code=status.HTTP_200_OK)
 async def user_data(data: dict):
 
