@@ -132,6 +132,24 @@ async def logout(request: Request):
 
 
 
+# Routes for user interactions 
+
+@interactions_router.post(path="/api/v1/like", dependencies=[Depends(JWTBearer())], summary="Like epidodes", response_model=Like)
+async def like(request: Request, 
+               like_data: Like = Body(), 
+               interaction_service: InteractionsService("like") = Depends(),):
+
+    like_data = jsonable_encoder(like_data)
+
+    try:
+        response = await interaction_service.save_interaction_data(request, like_data)
+        return response
+    except UserNotLoggedInError:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Please login first!")
+
+
+
+
 @data_router.post(path="/api/v1/mongodb", summary="User data", response_model=UserResponse, status_code=status.HTTP_200_OK)
 async def user_data(data: dict):
 
