@@ -1,12 +1,19 @@
-from fastapi import APIRouter, Body, status, HTTPException, Depends
+from fastapi import APIRouter, Body, status, HTTPException, Depends, Request
 from fastapi.encoders import jsonable_encoder
 from bson.objectid import ObjectId
 from starlette.responses import JSONResponse
 
 from schema.user import *
+from schema.interactions import *
 from service.user import *
+from service.interactions import InteractionsService
 from service.otp import OTPService
-from connection.httpx_manager import httpx_response, httpx_response_otp
+from jwt_auth.bearer import JWTBearer
+from connection.httpx_manager import (httpx_response, 
+                                      httpx_response_otp, 
+                                      httpx_response_with_header, 
+                                      httpx_response_with_header_and_data)
+
 
 
 account_router = APIRouter()
@@ -14,6 +21,7 @@ data_router = APIRouter()
 interactions_router = APIRouter()
 
 user_collection = get_collection()
+
 
 
 
