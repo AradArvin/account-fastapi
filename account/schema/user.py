@@ -28,6 +28,12 @@ class UserProfile(BaseModel):
 
 
 
+class UpdateProfile(BaseModel):
+    username: str | None=None
+    fullname: str | None=None
+    email: EmailStr | None=None
+
+
 class UserLogin(BaseModel):
     _id: str
     email: EmailStr = Field()
