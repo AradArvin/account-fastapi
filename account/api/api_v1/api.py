@@ -237,6 +237,21 @@ async def bookmark_list(request: Request,
 
 
 
+@interactions_router.post(path="/api/v1/subscribe-list", dependencies=[Depends(JWTBearer())], summary="Subscribe rss")
+async def subscribe_list(request: Request, 
+                         interaction_service: InteractionsService("subscribe") = Depends(),):
+
+    try:
+        response = await interaction_service.get_interaction_data_list(request)
+        return response
+    except UserNotLoggedInError:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Please login first!")
+
+
+
+
+# Data router to get data from mongodb and returnes it
+
 @data_router.post(path="/api/v1/mongodb", summary="User data", response_model=UserResponse, status_code=status.HTTP_200_OK)
 async def user_data(data: dict):
 
