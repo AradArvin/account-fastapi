@@ -39,15 +39,28 @@ class MongoDBConnectionManager:
     async def get_data_from_db_collection(self):
         data_list = list()
 
-        collection_datas = await self.collection.find()
+        collection_data = await self.collection.find()
 
-        for data in collection_datas:
+        for data in collection_data:
             data["id"] = str(data["_id"])
             del[data['_id']]
             data_list.append(data)
 
         return data_list
+    
 
+    async def get_data_by_query(self, field_name: str, value: any):
+        data_list = list()
+
+        collection_data = await self.collection.find({field_name: value})
+
+        for data in collection_data:
+            data["id"] = str(data["_id"])
+            del[data['_id']]
+            data_list.append(data)
+
+        return data_list
+    
 
     async def delete_data_from_db_collection(self, instance_id: ObjectId):
         result = await self.collection.find_one_and_delete({"_id":instance_id})
