@@ -29,6 +29,10 @@ user_collection = get_collection()
 async def user_verify(data: OTP = Body(), 
                       otp_service: OTPService = Depends(),):
     
+    """
+    Verify the user login using otp validation. the jwt tokens are returned in response.
+    """
+
     data = jsonable_encoder(data)
     
     user_id_from_otp = await otp_service.get_user_id_if_verify(data["otp"])
@@ -50,6 +54,12 @@ async def user_verify(data: OTP = Body(),
 async def user_signup(user: User = Body(), 
                       user_service: UserService = Depends(),):
     
+    """
+    Sign up a user by saving the user data to mongodb and making a http_x request to 
+    authorization fastapi app to set jwt tokens for user. the tokens are then returned
+    in response. 
+    """
+    
     user = jsonable_encoder(user)
     
     if await user_collection.find_data_by_another_field(field_name="email", field_data=user["email"]):
@@ -68,6 +78,11 @@ async def user_signup(user: User = Body(),
 @account_router.post(path="/api/v1/login", summary="User Login", response_model=Tokens)
 async def user_login(login_data: UserLogin = Body(), 
                      user_service: UserService = Depends(),):
+    
+    """
+    Checkes the entered data by user and then makes a http_x request to notification
+    app to send an email to user containing otp code for verification. 
+    """
     
     login_data = jsonable_encoder(login_data)
 
@@ -90,6 +105,9 @@ async def user_login(login_data: UserLogin = Body(),
 
 @account_router.post(path="/api/v1/profile", dependencies=[Depends(JWTBearer())], summary="User profile", response_model=UserProfile)
 async def user_profile(request: Request):
+    """
+    Show user profile by getting data via http_x request to authorization app.
+    """
     
     bearer = request.headers.get("Authorization")
     user = await httpx_response_with_header("api/v1/profile", bearer)
@@ -102,6 +120,10 @@ async def user_profile(request: Request):
 async def update_user_profile(request: Request,
                               entered_data: UpdateProfile = Body(),):
     
+    """
+    Update user profile by sending data via http_x request to authorization app.
+    """
+    
     entered_data = jsonable_encoder(entered_data)
 
     bearer = request.headers.get("Authorization")
@@ -113,6 +135,9 @@ async def update_user_profile(request: Request,
 
 @account_router.post(path="/api/v1/access-token", dependencies=[Depends(JWTBearer(is_refresh=True))], summary="Get access token if logged in", response_model=AccessToken)
 async def get_access_token(request: Request):
+    """
+    Get access token by sending data via http_x request to authorization app.
+    """
     
     bearer = request.headers.get("Authorization")
     access_token = await httpx_response_with_header("api/v1/access-token", bearer)
@@ -123,6 +148,9 @@ async def get_access_token(request: Request):
 
 @account_router.post(path="/api/v1/logout", dependencies=[Depends(JWTBearer())], summary="Logout from account")
 async def logout(request: Request):
+    """
+    Logout by sending data via http_x request to authorization app.
+    """
     
     bearer = request.headers.get("Authorization")
     access_token = await httpx_response_with_header("api/v1/logout", bearer)
@@ -250,7 +278,7 @@ async def subscribe_list(request: Request,
 
 
 
-# Data router to get data from mongodb and returnes it
+# Data routes to get data from mongodb and return them in response
 
 @data_router.post(path="/api/v1/mongodb", summary="User data", response_model=UserResponse, status_code=status.HTTP_200_OK)
 async def user_data(data: dict):

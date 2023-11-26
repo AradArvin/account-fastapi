@@ -1,4 +1,4 @@
-
+# Basic exceptions to handle any errors that may occur.
 
 class Error(Exception):
     pass

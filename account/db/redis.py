@@ -9,6 +9,9 @@ redis = aioredis.from_url(HOST_ADDRESS, decode_responses=True)
 
 
 async def check_otp(otp: str):
+    """
+    Check if otp is cached in redis and then return it.
+    """
 
     all_keys = await redis.keys("*")
 

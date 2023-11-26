@@ -1,6 +1,8 @@
 from pydantic import Field, BaseModel
 
 
+# Schemas for mongodb document design and a way to know the data structure for each document.
+
 class Like(BaseModel):
     _id: str
     episode_id: str = Field()

@@ -1,6 +1,6 @@
 from db.redis import check_otp
 
-
+# A service to check otp verification
 class OTPService:
 
     def __init__(self) -> None:

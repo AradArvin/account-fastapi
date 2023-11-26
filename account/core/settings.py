@@ -1,6 +1,6 @@
 from decouple import config
 
-
+# Main app settings
 
 
 JWT_SECRET = config("JWT_SECRET_KEY")

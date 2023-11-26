@@ -5,7 +5,7 @@ from db.db import get_collection
 from exception.exception import *
 
 
-
+# Service for user data handling.
 class UserService:
     
     PWD_CONTEXT = CryptContext(schemes=["bcrypt"], deprecated="auto")

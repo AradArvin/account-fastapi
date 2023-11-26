@@ -3,7 +3,7 @@ from exception.exception import *
 from connection.httpx_manager import httpx_response_with_header
 from jwt_auth.utils import token_decode
 
-
+# A service to perform user interactions
 class InteractionsService:
 
     def __init__(self) -> None:
@@ -11,7 +11,9 @@ class InteractionsService:
 
 
     async def save_interaction_data(self, request, data, collection_name):
-
+        """
+        Saves the interaction data for logged in user.
+        """
         bearer = request.headers.get("Authorization")
         response = await httpx_response_with_header("api/v1/check-login", bearer)
 
@@ -28,7 +30,9 @@ class InteractionsService:
         
 
     async def get_interaction_data_list(self, request, collection_name):
-
+        """
+        Returns the interaction data for logged in user.
+        """
         bearer = request.headers.get("Authorization")
         response = await httpx_response_with_header("api/v1/check-login", bearer)
 

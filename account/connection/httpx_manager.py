@@ -2,6 +2,7 @@ import httpx
 from core import settings
 
 
+# HTTP_X requests to diffrent apps and with diffrent settings
 
 async def httpx_response(authorization_endpoint: str, data: dict):
 

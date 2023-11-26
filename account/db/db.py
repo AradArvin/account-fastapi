@@ -1,5 +1,7 @@
 from .mongodb import MongoDBConnectionManager
 
+# MongoDB collections
+
 user_collection = MongoDBConnectionManager(database="users", collection="user_data")
 
 like_collection = MongoDBConnectionManager(database="interaction", collection="like")
@@ -13,6 +15,9 @@ def get_collection():
 
 
 def get_interaction_collection(collection_name: str):
+    """
+    Return a collection based on the argument.
+    """
     if collection_name == "like":
         return like_collection
     elif collection_name == "comment":

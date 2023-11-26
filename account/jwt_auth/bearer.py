@@ -4,8 +4,7 @@ from .utils import token_decode
 import jwt
 
 
-
-# Bearer Token
+# Bearer Token checker class which is responsible to check the token in request header for expiry and validation.
 class JWTBearer(HTTPBearer):
 
     def __init__(self, auto_error: bool = True, is_refresh: bool = False):
